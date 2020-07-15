@@ -1,0 +1,12 @@
+#pragma once
+
+
+
+enum class Locations
+{
+	ARGONIA_MAIN_SQUARE,
+	ARGONIA_SEWERS,
+	ARGONIA_QUEST_BOARD,
+	ARGONIA_TAVERN,
+	ARGONIA_OUTSIDE_FOREST
+};

@@ -19,3 +19,7 @@ HeroGame/Debug/vc141.idb
 HeroGame/Debug/vc141.pdb
 HeroGame/Debug/HeroGame.log
 HeroGame/Debug/HeroGame.obj
+HeroGame/Debug/Locations.obj
+HeroGame/Debug/Player.obj
+HeroGame/Debug/Quest.obj
+HeroGame/Debug/City.obj

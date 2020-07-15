@@ -24,124 +24,24 @@ public:
 	unsigned int GetDamage() const { return Damage; }
 };
 
-class Axe : Weapon
-{
-private:
-
-public:
-
-
-};
+//class Axe : Weapon
+//{
+//private:
+//
+//public:
+//
+//
+//};
 
 //ew
 
-#include <vector>
 
-class Quest
-{
-public:
-	enum class QuestStatus;
-	enum class QuestType;
-private:
-
-
-
-	QuestType QuestObjective{ QuestType::QT_UNASSIGNED };
-	QuestStatus QuestState{ QuestStatus::QS_INACTIVE };
-	std::string QuestDescription{ "" };
-
-public:
-	Quest(QuestType CurrentQuestObjective, QuestStatus CurrentQuestState, std::string CurrentQuestDescription)
-		: QuestObjective{ CurrentQuestObjective }, QuestState{ CurrentQuestState }, QuestDescription{ CurrentQuestDescription }
-	{
-
-	}
-	// Is this quest assigned to a player?
-	enum class QuestStatus
-	{
-		QS_ACTIVE,
-		QS_INACTIVE,
-		QS_COMPLETE,
-		QS_ABANDONED,
-	};
-
-	enum class QuestType
-	{
-		QT_SUBJUGATION,
-		QT_GATHERING,
-		QT_ESCORT,
-		QT_SPECIAL,
-		QT_UNASSIGNED
-	};
-
-	std::string GetQuestDescription() const { return QuestDescription; }
-	void ChangeQuestStatus(QuestStatus NewStatus) { QuestState = NewStatus; }
-};
 
 // Room for Axe, mace, classes etc that inherit from weapon and implement GetName as their class name.
 // Seems kind of useless now, but later it might be useful for something.
 
 #include <vector>
 
-class Player
-{
-private:
-	unsigned int Age{0};
-	std::string Name{ "" };
-	unsigned int Damage{ 0 };
-	std::vector<Quest> ActiveQuests;
-
-public:
-	Player(unsigned int m_Age, std::string m_Name, unsigned int m_Damage)
-		: Age{ m_Age }, Name{ m_Name }, Damage{ m_Damage }
-	{
-
-	}
-
-	std::string GetName() const { return Name; }
-	unsigned int GetAge() const { return Age; }
-	unsigned int GetDamage() const { return Damage; }
-
-	void AcceptQuest(Quest& AcceptedQuest)
-	{
-		AcceptedQuest.ChangeQuestStatus(Quest::QuestStatus::QS_ACTIVE);
-		ActiveQuests.push_back(AcceptedQuest);
-	}
-
-	void ListActiveQuests() const
-	{
-		for (int i = 0; i < ActiveQuests.size(); ++i)
-		{
-			std::cout << ActiveQuests.begin()->GetQuestDescription();
-		}
-	}
-
-};
-
-
-
-class City
-{
-private:
-	unsigned int NumberOfPeople{ 0 };
-	std::vector<Quest> AvailableQuests;
-public:
-	City() = delete;
-
-	City(unsigned int NumOfPeople, std::vector<Quest> QuestsForPlayers)
-		: NumberOfPeople{ NumOfPeople }, AvailableQuests{ QuestsForPlayers }
-	{
-
-	}
-
-	// TODO: how will I handle reading past an array of size 1 
-	// TODO: how will I handle a null pointer
-	std::string ReadAvailableQuestsDescription() const
-	{ 
-		return AvailableQuests.begin()->GetQuestDescription();
-	}
-
-};
 
 
 //class GameManager
@@ -161,6 +61,10 @@ public:
 //public:
 //
 //};
+
+#include "Player.h"
+#include "City.h"
+#include "Quest.h"
 
 int main()
 {
@@ -193,77 +97,36 @@ int main()
 
 	Quest ArgnoiaRatKillQuest(Quest::QuestType::QT_SUBJUGATION, Quest::QuestStatus::QS_INACTIVE, "Kill 5 sewer rats");
 	std::vector<Quest> ArgoniaQuests{ ArgnoiaRatKillQuest };
-	City Argonia(4, ArgoniaQuests);
+	std::vector<std::string> ArgoniaInfo{ "Press 1 To Travel to the Tavern", "Press 2 to Travel to the Quest Board", "Press 3 to Travel to the Sewers",  "Press 5 to leave the city." };
 
-	// Argonia town center action prompt
-	std::cout << "Press 1 To Travel to the Tavern" << std::endl;
-	std::cout << "Press 2 to Travel to the Quest Board" << std::endl;
-	std::cout << "Press 3 to Travel to the Sewers" << std::endl;
-	std::cout << "Press 5 to leave the city." << std::endl;
+	City Argonia(4, ArgoniaQuests, ArgoniaInfo);
+	MainCharacter.EnterCity(&Argonia);
 
-	int PlayerCityAction{ 0 };
-	std::cin >> PlayerCityAction;
-	switch (PlayerCityAction)
+	Argonia.DisplayCityInfoPrompt();
+	Argonia.TakeInputFromMainSquare();
+
+	std::cout << "You have accepted the quest, Press 2 to go back to the previous menu" << std::endl; // TODO maybe: or press 1 to get another quest?
+
+	// TODO: Learn how to flush/clear the console so its less confusing about whats going on.
+
+	// We need a way to get players off of a sub menu if they are on one and back into the main square.
+	int PlayerInput{ 0 };
+	std::cin >> PlayerInput;
+	if (PlayerInput == 1)
 	{
-		case 1: 
-		{
+		// do nothing for now
 
+	}
+	else if (PlayerInput == 2)
+	{
+		MainCharacter.UpdatePlayerLocation(Locations::ARGONIA_MAIN_SQUARE);
 
-			break;
-		}
-		case 2:
-		{
-			std::cout << "Would you like to take a new quest?" << std::endl;
-			std::cout << Argonia.ReadAvailableQuestsDescription() << std::endl;
-
-			std::cout << "Would you like to take this quest?" << std::endl;
-			std::cout << "Press 1 to accept the quest Press 2 to leave" << std::endl;
-			int ShouldTakeQuest{ 0 };
-			std::cin >> ShouldTakeQuest;
-			switch (ShouldTakeQuest)
-			{
-				case 1: 
-				{
-					MainCharacter.AcceptQuest(*ArgoniaQuests.begin());
-					break;
-				}
-				case 2:
-				{
-				
-					break;
-				}
-			}
-
-			break;
-		}
-		case 3:
-		{
-
-
-			break;
-		}
-		case 4:
-		{
-			// do nothing
-			break;
-		}
-		case 5:
-		{
-
-			break;
-		}
-		break;              //execution of subsequent statements is terminated
 	}
 
-
-	// Argonia town center action prompt
-	std::cout << "Press 1 To Travel to the Tavern" << std::endl;
-	//std::cout << "Press 2 to Travel to the Quest Board" << std::endl;
-	std::cout << "Press 3 to Travel to the Sewers" << std::endl;
-	std::cout << "Press 5 to leave the city." << std::endl;
+	Argonia.TakeInputFromMainSquare();
 
 
-	//MainCharacter.ListActiveQuests();
+	// hmmm is this how I want to do this? its pretty constricted.
 
 
 }
