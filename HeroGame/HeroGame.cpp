@@ -44,89 +44,43 @@ public:
 
 
 
-//class GameManager
-//{
-//	// class to control the UI changes when the player selects an option to go to a different area.
-//private:
-//	enum class PlayerArea
-//	{
-//		PA_ARGONIA,
-//		PA_ARGONIA_SEWERS,
-//		PA_ARGONIA_QUEST_BOARD,
-//		PA_ARGONIA_TAVERN
-//	};
-//
-//	// Player starts in the argonia city center
-//	PlayerArea PlayerCurrentArea{ PlayerArea::PA_ARGONIA }; 
-//public:
-//
-//};
 
 #include "Player.h"
 #include "City.h"
 #include "Quest.h"
+#include "GameManager.h"
+
 
 int main()
 {
 
 	// Initial Makings of a game manager class?
-	// Welcome Message
-	std::cout << "Placeholder welcome message" << std::endl;
+	GameManager::DisplayWelcomeMessage();
+	std::string MainCharacterName = GameManager::GetMainCharacterNameFromUser();
 
-
-	std::cout << "Enter a name for your character." << std::endl;
-
-	std::string MainCharacterName{ "" };
-	std::cin >> MainCharacterName;
-
-	//std::cout << "Enter an Age for your character." << std::endl;
-	unsigned int MainCharacterAge{ 14 };
-	//std::cin >> MainCharacterAge;
+	const unsigned int MainCharacterAge{ 14 }; // 14 for now for story reasons, maybe change later.
 
 	// Create the Main Character 
-	unsigned int StartingCharacterDamage{ 1 };
-	Player MainCharacter(MainCharacterAge, MainCharacterName, StartingCharacterDamage); // Initial damage is 1 for now.
+	const unsigned int StartingCharacterDamage{ 1 };
+	Player* MainCharacter = new Player(MainCharacterAge, MainCharacterName, StartingCharacterDamage); // Initial damage is 1 for now.
+
+	GameManager::DisplayACharacterBasicInfo(MainCharacter);
+	GameManager::DisplayGameIntroStory();
+
+	// Create a starting quest for the player to take.
+	Quest* ArgnoiaRatKillQuest = new Quest(Quest::QuestType::QT_SUBJUGATION, Quest::QuestStatus::QS_INACTIVE, "Kill 5 sewer rats");
+	City* Argonia = new City(4, ArgnoiaRatKillQuest);
+	// TODO: how is the quest supposed to know the player is in the sewers killing rats?
+	MainCharacter->EnterCity(Argonia);
 
 
-	std::cout << "Your name is " << MainCharacter.GetName() << " your age is " << MainCharacter.GetAge() << " your starting damage is " << MainCharacter.GetDamage();
+	// So far the player enters the city, has his current location updated to argonia main square, and a reference to the player is also added to the city
+	// Right now argonia is created with a pre-built quest that is currently not being used.
+
+	// Next I need to figure out how to flush the UI since all the tutorial stuff is done. (how will i  do it with a press any key to continue which flushes the UI)
+	// Then I need some sort of strategy to program that will advance the game and also not be too confusing.
 
 
-	std::cout << "The story so far." << std::endl;
-	std::cout << "Assassins ambush your family in the middle of the night." << std::endl;
-	std::cout << "You were barely able to escape your familys estate and you made it to the nearby capital of Argonia after walking for a couple days." << std::endl;
-
-	Quest ArgnoiaRatKillQuest(Quest::QuestType::QT_SUBJUGATION, Quest::QuestStatus::QS_INACTIVE, "Kill 5 sewer rats");
-	std::vector<Quest> ArgoniaQuests{ ArgnoiaRatKillQuest };
-	std::vector<std::string> ArgoniaInfo{ "Press 1 To Travel to the Tavern", "Press 2 to Travel to the Quest Board", "Press 3 to Travel to the Sewers",  "Press 5 to leave the city." };
-
-	City Argonia(4, ArgoniaQuests, ArgoniaInfo);
-	MainCharacter.EnterCity(&Argonia);
-
-	Argonia.DisplayCityInfoPrompt();
-	Argonia.TakeInputFromMainSquare();
-
-	std::cout << "You have accepted the quest, Press 2 to go back to the previous menu" << std::endl; // TODO maybe: or press 1 to get another quest?
-
-	// TODO: Learn how to flush/clear the console so its less confusing about whats going on.
-
-	// We need a way to get players off of a sub menu if they are on one and back into the main square.
-	int PlayerInput{ 0 };
-	std::cin >> PlayerInput;
-	if (PlayerInput == 1)
-	{
-		// do nothing for now
-
-	}
-	else if (PlayerInput == 2)
-	{
-		MainCharacter.UpdatePlayerLocation(Locations::ARGONIA_MAIN_SQUARE);
-
-	}
-
-	Argonia.TakeInputFromMainSquare();
-
-
-	// hmmm is this how I want to do this? its pretty constricted.
 
 
 }

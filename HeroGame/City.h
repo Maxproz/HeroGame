@@ -9,9 +9,7 @@ class City
 {
 private:
 	unsigned int NumberOfPeople{ 0 };
-	std::vector<Quest> AvailableQuests;
-	std::vector<std::string> CityInfoPrompt;
-	
+	Quest* AvailableQuest{ nullptr };
 	Player* PlayerInCity;
 	bool IsPlayerInASubZone{ false };
 
@@ -21,24 +19,18 @@ protected:
 public:
 	City() = delete;
 
-	City(unsigned int NumOfPeople, std::vector<Quest> QuestsForPlayers)
-		: NumberOfPeople{ NumOfPeople }, AvailableQuests{ QuestsForPlayers }
+
+	// TODO: Make a constructor that takes no quests and assigns availablequest to nullptr and gives a no quest available to the player if they try to take one.
+	City(unsigned int NumOfPeople, Quest* QuestForPlayers)
+		: NumberOfPeople{ NumOfPeople }, AvailableQuest{ QuestForPlayers }
 	{
 
 	}
 
-	City(unsigned int NumOfPeople, std::vector<Quest> QuestsForPlayers, std::vector<std::string> CityInfo)
-		: NumberOfPeople{ NumOfPeople }, AvailableQuests{ QuestsForPlayers }, CityInfoPrompt{ CityInfo }
 
-	{
 
-	}
-
-	// TODO: how will I handle reading past an array of size 1 
-	// TODO: how will I handle a null pointer
-	std::string ReadAvailableQuestsDescription() const;
-	void DisplayCityInfoPrompt() const;
-	void TakeInputFromMainSquare();
 	void SetVisitingPlayer(Player* InPlayer);
+	std::string GetAvailableQuestDescription() const;
+
 };
 

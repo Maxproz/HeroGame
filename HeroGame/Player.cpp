@@ -8,18 +8,26 @@
 
 
 
-void Player::AcceptQuest(Quest& AcceptedQuest)
+void Player::AcceptQuest(Quest* AcceptedQuest)
 {
-	AcceptedQuest.ChangeQuestStatus(Quest::QuestStatus::QS_ACTIVE);
-	ActiveQuests.push_back(AcceptedQuest);
+	AcceptedQuest->ChangeQuestStatus(Quest::QuestStatus::QS_ACTIVE);
+	ActiveQuest = AcceptedQuest;
+
 }
 
-void Player::ListActiveQuests() const
+void Player::ListActiveQuest() const
 {
-	for (int i = 0; i < ActiveQuests.size(); ++i)
+
+	if (ActiveQuest)
 	{
-		std::cout << ActiveQuests.begin()->GetQuestDescription();
+		std::cout << ActiveQuest->GetQuestDescription();
 	}
+	else
+	{
+		std::cout << "Error: ActiveQuest is nullptr" << std::endl;
+	}
+
+
 }
 
 void Player::UpdatePlayerLocation(const Locations& NewLocation)
@@ -30,10 +38,12 @@ void Player::UpdatePlayerLocation(const Locations& NewLocation)
 
 void Player::EnterCity(City* CityPlayerEnters)
 {
+	UpdatePlayerLocation(Locations::ARGONIA_MAIN_SQUARE);
 	CityPlayerEnters->SetVisitingPlayer(this);
 }
 
 void Player::ExitCity(City* CityPlayerLeaves)
 {
+	UpdatePlayerLocation(Locations::OUTSIDE_ARGONIA_FOREST);
 	CityPlayerLeaves->SetVisitingPlayer(nullptr);
 }

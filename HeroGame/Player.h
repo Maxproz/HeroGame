@@ -13,7 +13,7 @@ private:
 	unsigned int Age{ 0 };
 	std::string Name{ "" };
 	unsigned int Damage{ 0 };
-	std::vector<Quest> ActiveQuests;
+	Quest* ActiveQuest = nullptr;
 	Locations PlayerLocation{ Locations::ARGONIA_MAIN_SQUARE }; // Player starts the game here
 
 public:
@@ -27,8 +27,8 @@ public:
 	unsigned int GetAge() const { return Age; }
 	unsigned int GetDamage() const { return Damage; }
 
-	void AcceptQuest(Quest& AcceptedQuest);
-	void ListActiveQuests() const;
+	void AcceptQuest(Quest* AcceptedQuest);
+	void ListActiveQuest() const;
 
 	void UpdatePlayerLocation(const Locations& NewLocation);
 	Locations GetPlayerLocation() const { return PlayerLocation; }
