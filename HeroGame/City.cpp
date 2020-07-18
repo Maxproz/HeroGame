@@ -5,15 +5,18 @@
 #include <string>
 #include "Player.h"
 
-std::string City::GetAvailableQuestDescription() const
+std::string Tavern::GetAvailableQuestDescription() const
 {
 	if (AvailableQuest)
 		return AvailableQuest->GetQuestDescription();
 	else
 	{
 		std::cout << "Available Quest is nullptr";
+		throw std::exception("GetAvailableQuestDescription has a nullptr");
 	}
 }
+
+
 
 
 

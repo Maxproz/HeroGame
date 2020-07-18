@@ -7,29 +7,22 @@
 class Quest
 {
 public:
-	enum class QuestStatus;
 	enum class QuestType;
 private:
-
-
 	QuestType QuestObjective{ QuestType::QT_UNASSIGNED };
-	QuestStatus QuestState{ QuestStatus::QS_INACTIVE };
+
+	bool IsQuestAssigned{ false };
 	std::string QuestDescription{ "" };
 
+
+
 public:
-	Quest(QuestType CurrentQuestObjective, QuestStatus CurrentQuestState, std::string CurrentQuestDescription)
-		: QuestObjective{ CurrentQuestObjective }, QuestState{ CurrentQuestState }, QuestDescription{ CurrentQuestDescription }
+	Quest(const QuestType& CurrentQuestObjective, const bool& QuestStatus, const std::string& CurrentQuestDescription)
+		: QuestObjective{ CurrentQuestObjective }, IsQuestAssigned{ QuestStatus }, QuestDescription{ CurrentQuestDescription }
 	{
 
 	}
-	// Is this quest assigned to a player?
-	enum class QuestStatus
-	{
-		QS_ACTIVE,
-		QS_INACTIVE,
-		QS_COMPLETE,
-		QS_ABANDONED,
-	};
+
 
 	enum class QuestType
 	{
@@ -41,7 +34,25 @@ public:
 	};
 
 	std::string GetQuestDescription() const { return QuestDescription; }
-	void ChangeQuestStatus(QuestStatus NewStatus) { QuestState = NewStatus; }
+	void ChangeQuestStatus(const bool& IsAssigned) { IsQuestAssigned = IsAssigned; }
 
 
+};
+
+class SubjugationQuest : public Quest
+{
+private:
+	unsigned int KillProgress{ 0 };
+	unsigned int KillsToComplete{ 0 };
+	bool IsQuestComplete{ false };
+public:
+	SubjugationQuest(const bool& QuestStatus, const std::string& CurrentQuestDescription,  const unsigned int& KillsToFinishQuest)
+		: Quest{ QuestType::QT_SUBJUGATION, QuestStatus, CurrentQuestDescription }, KillsToComplete{ KillsToFinishQuest }
+	{
+		
+	}
+
+	void ProgressQuest();
+	bool UpdateQuest();
+	bool GetQuestCompletionStatus() const { return IsQuestComplete; } // for the tavern/quest guild to check quest status
 };

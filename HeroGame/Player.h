@@ -6,6 +6,7 @@
 
 class Quest;
 class City;
+class Tavern;
 
 class Player
 {
@@ -15,6 +16,7 @@ private:
 	unsigned int Damage{ 0 };
 	Quest* ActiveQuest = nullptr;
 	Locations PlayerLocation{ Locations::ARGONIA_MAIN_SQUARE }; // Player starts the game here
+	Tavern* TavernWeAreVisiting{ nullptr };
 
 public:
 	Player(unsigned int m_Age, std::string m_Name, unsigned int m_Damage)
@@ -35,4 +37,10 @@ public:
 
 	void EnterCity(City* CityPlayerEnters);
 	void ExitCity(City* CityPlayerLeaves);
+
+
+	void EnterTavern(Tavern* InTavern);
+	void ExitTavern(Tavern* OutTavern);
+	Tavern* GetTavernWeAreIn();
+
 };

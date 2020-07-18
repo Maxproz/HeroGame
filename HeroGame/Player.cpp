@@ -10,7 +10,7 @@
 
 void Player::AcceptQuest(Quest* AcceptedQuest)
 {
-	AcceptedQuest->ChangeQuestStatus(Quest::QuestStatus::QS_ACTIVE);
+	AcceptedQuest->ChangeQuestStatus(true);
 	ActiveQuest = AcceptedQuest;
 
 }
@@ -47,3 +47,32 @@ void Player::ExitCity(City* CityPlayerLeaves)
 	UpdatePlayerLocation(Locations::OUTSIDE_ARGONIA_FOREST);
 	CityPlayerLeaves->SetVisitingPlayer(nullptr);
 }
+
+void Player::EnterTavern(Tavern* InTavern)
+{
+	TavernWeAreVisiting = InTavern;
+	InTavern->PlayerEnters();
+	UpdatePlayerLocation(Locations::ARGONIA_TAVERN);
+}
+
+void Player::ExitTavern(Tavern* OutTavern)
+{
+	TavernWeAreVisiting = nullptr;
+	OutTavern->PlayerExits();
+	UpdatePlayerLocation(Locations::ARGONIA_MAIN_SQUARE);
+}
+
+Tavern* Player::GetTavernWeAreIn()
+{
+	if (TavernWeAreVisiting)
+	{
+		return TavernWeAreVisiting;
+	}
+	else
+	{
+		throw std::exception("nullptr inside GetTavernWeAreIn()");
+	}
+}
+
+
+
