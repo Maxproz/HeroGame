@@ -63,13 +63,13 @@ int main()
 	{
 		case 1:
 		{
-			MainCharacter->EnterTavern(&(Argonia->GetTavern()));
+			MainCharacter->EnterTavern(Argonia->GetTavern());
 			GameManager::UpdatePlayerNewLocationPrompt(MainCharacter);
 			break;
 		}
 		case 2:
 		{
-			//MainCharacter->EnterSewers(&(Argonia->GetSewers()));
+			MainCharacter->EnterSewers(Argonia->GetSewers());
 			GameManager::UpdatePlayerNewLocationPrompt(MainCharacter);
 			break;
 		}

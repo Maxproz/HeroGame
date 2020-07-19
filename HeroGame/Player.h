@@ -7,6 +7,15 @@
 class Quest;
 class City;
 class Tavern;
+class Sewers;
+
+
+enum class ExplorationResult
+{
+	ER_NOTHING,
+	ER_MONSTER,
+	ER_CHEST
+};
 
 class Player
 {
@@ -17,6 +26,7 @@ private:
 	Quest* ActiveQuest = nullptr;
 	Locations PlayerLocation{ Locations::ARGONIA_MAIN_SQUARE }; // Player starts the game here
 	Tavern* TavernWeAreVisiting{ nullptr };
+	Sewers* SewersWeAreVisiting{ nullptr };
 
 public:
 	Player(unsigned int m_Age, std::string m_Name, unsigned int m_Damage)
@@ -41,6 +51,12 @@ public:
 
 	void EnterTavern(Tavern* InTavern);
 	void ExitTavern(Tavern* OutTavern);
+
+	void EnterSewers(Sewers* InSewers);
+	void ExitSewers(Sewers* OutSewers);
 	Tavern* GetTavernWeAreIn();
+	Sewers* GetSewersWeAreIn();
+
+	ExplorationResult KeepExploringSewers();
 
 };

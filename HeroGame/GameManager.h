@@ -123,8 +123,39 @@ public:
 			}
 			case Locations::ARGONIA_SEWERS:
 			{
-				// TODO: Code this
-				std::cout << "Placeholder code for entering sewers" << std::endl;
+				
+				std::cout << "You have entered the argonia sewers" << std::endl;
+				
+				std::cout << "Would you like to keep exploring?" << std::endl;
+				std::cout << "Press 1 to keep exploring or 2 to leave the Sewers" << std::endl;
+
+				int PlayerChoice = GetPlayerChoiceInput();
+
+				const int KeepExploring = 1;
+				const int LeaveSewers = 2;
+				while (PlayerChoice == KeepExploring)
+				{
+					ExplorationResult Result = MainPlayer->KeepExploringSewers();
+					if (Result == ExplorationResult::ER_MONSTER)
+					{
+						// need to fight
+						std::cout << "You encountred a giant rat." << std::endl;
+
+					}
+					else if (Result == ExplorationResult::ER_NOTHING)
+					{
+						std::cout << "You explored for a while but didn't find anything" << std::endl;
+					}
+					else
+					{
+						//code doesnt reach here for now
+					}
+
+					std::cout << "Would you like to keep exploring?" << std::endl;
+					std::cout << "Press 1 to keep exploring or 2 to leave the Sewers" << std::endl;
+					PlayerChoice = GetPlayerChoiceInput();
+
+				}
 
 				break;
 			}
